@@ -1,0 +1,22 @@
+=> To run cpp file
+=> g++ <fileName> : Compiles the cpp file
+=> -o out : It will make an executable file "out.exe"
+=> ./out : run the executable file
+=> < input.txt : take input from file "input.txt"
+=> > output.txt : get out in file "ouput.txt"
+
+/*******C++ COMMAND*********/
+g++ l001.cpp -o out && ./out  < input.txt > output.txt
+
+
+
+
+
+=>To run java file
+=> javac <fileName> : Compile java file (converts .java file to .class file)
+=> java <classFileName> : Run java file
+=> < input.txt : take input from file "input.txt"
+=> > output.txt : get out in file "ouput.txt"
+
+/******JAVA COMMAND*********/
+javac l001.java && java l001 < input.txt > output.txt

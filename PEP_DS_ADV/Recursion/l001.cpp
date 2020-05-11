@@ -13,10 +13,25 @@ void printIncreasingDecreasing(int a,int b){
     cout<<a<<" ";
 }
 
+void printEvenOdd(int a,int b){
+    if(a > b){
+        return;
+    }
+    if(a&1){
+        cout<<a<<" ";
+    }
+    printEvenOdd(a+1,b);
+    if(a!=b && a%2 == 0){
+        cout<<a<<" ";
+    }
+}
+
 void solve(){
     int a,b;
     cin>>a>>b;
     printIncreasingDecreasing(a,b);
+    cout<<endl;
+    printEvenOdd(a,b);
 }
 
 int main(){

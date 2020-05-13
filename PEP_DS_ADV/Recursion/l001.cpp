@@ -9,7 +9,7 @@ vector<string> words = {
     "def",
     "ghi",
     "jkl",
-    "mno",KT
+    "mno",
     "pqrs",
     "tuv",
     "wxyz",
@@ -98,6 +98,81 @@ vector<string> getNokiaPad(string str)
     return myRes;
 }
 
+vector<vector<int>> dir = {{0, 1}, {1, 1}, {1, 0}};
+
+bool isSafe(int sr, int sc, int dr, int dc)
+{
+    if (sr > dr || sc > dc)
+    {
+        return false;
+    }
+
+    return true;
+}
+
+void printMazePaths(int sr, int sc, int dr, int dc, string ans)
+{
+
+    if (sr == dr && sc == dc)
+    {
+        cout << ans << " ";
+        return;
+    }
+
+    for (int i = 0; i < dir.size(); i++)
+    {
+        int nr = sr + dir[i][0];
+        int nc = sc + dir[i][1];
+
+        if (isSafe(nr, nc, dr, dc))
+        {
+            if (i == 0)
+                printMazePaths(nr, nc, dr, dc, ans + "H");
+            if (i == 1)
+                printMazePaths(nr, nc, dr, dc, ans + "D");
+            if (i == 2)
+                printMazePaths(nr, nc, dr, dc, ans + "V");
+        }
+    }
+}
+
+void printMazeMulJumps(int sr, int sc, int dr, int dc, string ans)
+{
+      if (sr > dr || sc > dc)
+    {
+        return;
+    }
+
+    if (sr == dr && sc == dc)
+    {
+        cout << ans << " ";
+        return;
+    }
+
+    for (int i = 0; i < dir.size(); i++)
+    {
+        for (int jump = 1; jump <= 3; jump++)
+        {
+            int nr = sr + (jump * dir[i][0]);
+            int nc = sc + (jump * dir[i][1]);
+
+                if (i == 0)
+                {
+                    printMazeMulJumps(nr, nc, dr, dc, ans + "H"+to_string(jump));
+                }
+                if (i == 1)
+                {
+                    printMazeMulJumps(nr, nc, dr, dc, ans + "D"+to_string(jump));
+                }
+                if (i == 2)
+                {
+                    printMazeMulJumps(nr, nc, dr, dc, ans + "V"+to_string(jump));
+                }
+        }
+    }
+}
+
+
 void solve()
 {
     // int a,b;
@@ -110,7 +185,9 @@ void solve()
     // for(int i = 0;i<ans.size();i++){
     //     cout<<ans[i]<<" ";
     // }
-    printNokiaPad("10", "");
+    // printNokiaPad("10", "");
+    // printMazePaths(0, 0, 3, 3, "");
+    printMazeMulJumps(0, 0, 3, 3, "");
 }
 
 int main()

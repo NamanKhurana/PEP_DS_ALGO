@@ -138,7 +138,7 @@ void printMazePaths(int sr, int sc, int dr, int dc, string ans)
 
 void printMazeMulJumps(int sr, int sc, int dr, int dc, string ans)
 {
-      if (sr > dr || sc > dc)
+    if (sr > dr || sc > dc)
     {
         return;
     }
@@ -156,22 +156,107 @@ void printMazeMulJumps(int sr, int sc, int dr, int dc, string ans)
             int nr = sr + (jump * dir[i][0]);
             int nc = sc + (jump * dir[i][1]);
 
-                if (i == 0)
-                {
-                    printMazeMulJumps(nr, nc, dr, dc, ans + "H"+to_string(jump));
-                }
-                if (i == 1)
-                {
-                    printMazeMulJumps(nr, nc, dr, dc, ans + "D"+to_string(jump));
-                }
-                if (i == 2)
-                {
-                    printMazeMulJumps(nr, nc, dr, dc, ans + "V"+to_string(jump));
-                }
+            if (i == 0)
+            {
+                printMazeMulJumps(nr, nc, dr, dc, ans + "H" + to_string(jump));
+            }
+            if (i == 1)
+            {
+                printMazeMulJumps(nr, nc, dr, dc, ans + "D" + to_string(jump));
+            }
+            if (i == 2)
+            {
+                printMazeMulJumps(nr, nc, dr, dc, ans + "V" + to_string(jump));
+            }
         }
     }
 }
 
+//!-------------------------------------------------------------------
+//* void printMazeMulJumps(int sr, int sc, int dr, int dc, string ans)
+// {
+//     if (sr == dr && sc == dc)
+//     {
+//         cout << ans << " ";
+//         return;
+//     }
+
+//     for (int i = 0; i < dir.size(); i++)
+//     {
+//         for (int jump = 1; jump <= 3; jump++)
+//         {
+//             int nr = sr + (jump * dir[i][0]);
+//             int nc = sc + (jump * dir[i][1]);
+
+//             if (isSafe(nr, nc, sr, sc))
+//             {
+//                 if (i == 0)
+//                 {
+//                     printMazeMulJumps(nr, nc, dr, dc, ans + "H");
+//                 }
+//                 if (i == 1)
+//                 {
+//                     printMazeMulJumps(nr, nc, dr, dc, ans + "D");
+//                 }
+//                 if (i == 2)
+//                 {
+//                     printMazeMulJumps(nr, nc, dr, dc, ans + "V");
+//                 }
+//             }
+//         }
+//     }
+//* }
+//!--------------------------------------------------------------------------
+
+vector<string> getMazePaths(int sr, int sc, int dr, int dc)
+{
+    if (sr == dr && sc == dc)
+    {
+        vector<string> baseName;
+        baseName.push_back("");
+        return baseName;
+    }
+
+    vector<string> ans;
+
+    for (int jump = 1; jump <= 3; jump++)
+    {
+        if (sc + jump <= dc)
+        {
+            vector<string> horizontal = getMazePaths(sr, sc + jump, dr, dc);
+            for (string s : horizontal)
+            {
+                ans.push_back("H" + to_string(jump) + s);
+            }
+        }
+    }
+
+    for (int jump = 1; jump <= 3; jump++)
+    {
+        if (sr + jump <= dr)
+        {
+            vector<string> vertical = getMazePaths(sr + jump, sc, dr, dc);
+            for (string s : vertical)
+            {
+                ans.push_back("V" + to_string(jump) +  s);
+            }
+        }
+    }
+
+    for (int jump = 1; jump <= 3; jump++)
+    {
+        if (sr + jump <= dr && sc + jump <= dc)
+        {
+            vector<string> diagonal = getMazePaths(sr + jump, sc + jump, dr, dc);
+            for (string s : diagonal)
+            {
+                ans.push_back("D" + to_string(jump) + s);
+            }
+        }
+    }
+
+    return ans;
+}
 
 void solve()
 {
@@ -187,7 +272,12 @@ void solve()
     // }
     // printNokiaPad("10", "");
     // printMazePaths(0, 0, 3, 3, "");
-    printMazeMulJumps(0, 0, 3, 3, "");
+    // printMazeMulJumps(0, 0, 3, 3, "");
+    vector<string> v = getMazePaths(0, 0, 3, 3);
+    for (int i = 0; i < v.size(); i++)
+    {
+        cout << v[i] << " ";
+    }
 }
 
 int main()

@@ -258,6 +258,38 @@ vector<string> getMazePaths(int sr, int sc, int dr, int dc)
     return ans;
 }
 
+vector<vector<int>> floodDir = {{0,1},{1,1},{1,0},{1,-1},{0,-1},{-1,-1},{-1,0},{-1,1}};
+vector<string> dirName = {"R","RiDi","Do","LiDi","L","UpLeDi","T","ToRiDi"};
+int jump = 1;
+
+bool isValid(int sr,int sc,int er,int ec,vector<vector<bool>> &vis){
+    if(sr < 0 || sr > er || sc < 0 || sc > ec || vis[sr][sc]){
+        return false;
+    }
+    return true;
+}
+
+int floodFillMul(int sr,int sc,int er,int ec,vector<vector<bool>> &vis,string ans){
+    if(sr == er && sc == ec){
+        cout<<ans<<" ";
+        return 1;
+    }
+
+    vis[sr][sc] = true;
+    int count = 0;
+    for(int i = 0;i<floodDir.size();i++){
+        // for(int jump = 1;jump<=3;jump++){
+            int nr = sr + jump*floodDir[i][0];
+            int nc = sc + jump*floodDir[i][1];
+            if(isValid(nr,nc,er,ec,vis)){
+                count+=floodFillMul(nr,nc,er,ec,vis,ans+dirName[i]);
+            }
+        // }
+    }
+    vis[sr][sc] = false;
+    return count;
+}
+
 void solve()
 {
     // int a,b;
@@ -273,11 +305,14 @@ void solve()
     // printNokiaPad("10", "");
     // printMazePaths(0, 0, 3, 3, "");
     // printMazeMulJumps(0, 0, 3, 3, "");
-    vector<string> v = getMazePaths(0, 0, 3, 3);
-    for (int i = 0; i < v.size(); i++)
-    {
-        cout << v[i] << " ";
-    }
+    // vector<string> v = getMazePaths(0, 0, 3, 3);
+    // for (int i = 0; i < v.size(); i++)
+    // {
+    //     cout << v[i] << " ";
+    // }
+
+    vector<vector<bool>> vis (3,vector<bool>(3,false));
+    cout<<"\n"<<floodFillMul(0,0,2,2,vis,"");
 }
 
 int main()

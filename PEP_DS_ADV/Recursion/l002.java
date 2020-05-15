@@ -115,8 +115,84 @@ public class l002{
         System.out.println(p2.str + "==>" + p2.len);
     }
 
+    /**********************************************************************/
+
+    public static int coinChangePermInf(int[] ar,int tar,String ans){
+        if(tar == 0){
+            System.out.println(ans);
+            return 1;
+        }
+
+        int count = 0;
+        for(int i = 0;i<ar.length;i++){
+            if(tar-ar[i]>=0){
+                count+=coinChangePermInf(ar,tar-ar[i],ans+ar[i]);
+            }
+        }
+        return count;
+    }
+
+    public static int coinChangeCombInf(int[] ar,int tar,String ans,int idx){
+        if(tar == 0){
+            System.out.println(ans);
+            return 1;
+        }
+
+        int count = 0;
+        for(int i = idx;i<ar.length;i++){
+            if(tar-ar[i]>=0){
+                count+=coinChangeCombInf(ar,tar-ar[i],ans+ar[i],i);
+            }
+        }
+        return count;
+    }
+
+    public static int coinChangeComb(int[] ar,int tar,String ans,int idx){
+        if(tar == 0){
+            System.out.println(ans);
+            return 1;
+        }
+        int count = 0;
+        for(int i = idx;i<ar.length;i++){
+            if(tar-ar[i] >= 0){
+                count+=coinChangeComb(ar,tar-ar[i],ans+ar[i],i+1);
+            }
+        }
+
+        return count;
+    }
+
+    public static int coinChangePerm(int[] ar,int tar,String ans,boolean[] vis){
+        if(tar == 0){
+            System.out.println(ans);
+            return 1;
+        }
+        int count = 0;
+        for(int i = 0;i<ar.length;i++){
+            if(!vis[i]){
+            vis[i] = true;
+            if(tar-ar[i]>=0)
+            {
+                count+=coinChangePerm(ar,tar-ar[i],ans+ar[i],vis);
+            }
+            vis[i] = false;
+            }
+        }
+        return count;
+    }
+
+    public static void coinChangeVariations(){
+        int[] ar = {2,3,5,7};
+        int tar = 10;
+        // System.out.println("\n" + coinChangePermInf(ar,tar,""));
+        // System.out.println("\n" + coinChangeCombInf(ar,tar,"",0));
+        // System.out.println("\n" + coinChangeComb(ar,tar,"",0));
+        System.out.println("\n" + coinChangePerm(ar,tar,"",new boolean[ar.length]));
+    }
+
     public static void solve(){
-        floodFillVariations();
+        // floodFillVariations();
+        coinChangeVariations();
     }
 
     public static void main(String[] args){

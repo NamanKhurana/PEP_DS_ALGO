@@ -20,3 +20,19 @@ g++ l001.cpp -o out && ./out  < input.txt > output.txt
 
 /******JAVA COMMAND*********/
 javac l001.java && java l001 < input.txt > output.txt
+
+
+/*******Recursion**********/
+=>All about Permutations and Combinations 
+
+*Flood Fill (It is the base)
+**REAL_LIFE_PUZZLES (Follow same pattern) [BACKTRACKING]
+==>NQUEEN
+==>SUDOKU
+==>ENCODING
+==>Rat_In_a_Maze
+==>Coin_Change
+==>N_Knights
+==>CROSSWORD
+==>CRYPTO
+==>WORD_BREAK

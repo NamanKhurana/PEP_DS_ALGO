@@ -238,7 +238,7 @@ vector<string> getMazePaths(int sr, int sc, int dr, int dc)
             vector<string> vertical = getMazePaths(sr + jump, sc, dr, dc);
             for (string s : vertical)
             {
-                ans.push_back("V" + to_string(jump) +  s);
+                ans.push_back("V" + to_string(jump) + s);
             }
         }
     }
@@ -258,35 +258,87 @@ vector<string> getMazePaths(int sr, int sc, int dr, int dc)
     return ans;
 }
 
-vector<vector<int>> floodDir = {{0,1},{1,1},{1,0},{1,-1},{0,-1},{-1,-1},{-1,0},{-1,1}};
-vector<string> dirName = {"R","RiDi","Do","LiDi","L","UpLeDi","T","ToRiDi"};
+vector<vector<int>> floodDir = {{0, 1}, {1, 1}, {1, 0}, {1, -1}, {0, -1}, {-1, -1}, {-1, 0}, {-1, 1}};
+vector<string> dirName = {"R", "RiDi", "Do", "LiDi", "L", "UpLeDi", "T", "ToRiDi"};
+// int jump = max(er,ec);
 int jump = 1;
 
-bool isValid(int sr,int sc,int er,int ec,vector<vector<bool>> &vis){
-    if(sr < 0 || sr > er || sc < 0 || sc > ec || vis[sr][sc]){
+bool isValid(int sr, int sc, int er, int ec, vector<vector<bool>> &vis)
+{
+    if (sr < 0 || sr > er || sc < 0 || sc > ec || vis[sr][sc])
+    {
         return false;
     }
     return true;
 }
 
-int floodFillMul(int sr,int sc,int er,int ec,vector<vector<bool>> &vis,string ans){
-    if(sr == er && sc == ec){
-        cout<<ans<<" ";
+int floodFillMul(int sr, int sc, int er, int ec, vector<vector<bool>> &vis, string ans)
+{
+    if (sr == er && sc == ec)
+    {
+        cout << ans << " ";
         return 1;
     }
 
     vis[sr][sc] = true;
     int count = 0;
-    for(int i = 0;i<floodDir.size();i++){
+    for (int i = 0; i < floodDir.size(); i++)
+    {
         // for(int jump = 1;jump<=3;jump++){
-            int nr = sr + jump*floodDir[i][0];
-            int nc = sc + jump*floodDir[i][1];
-            if(isValid(nr,nc,er,ec,vis)){
-                count+=floodFillMul(nr,nc,er,ec,vis,ans+dirName[i]);
-            }
+        int nr = sr + jump * floodDir[i][0];
+        int nc = sc + jump * floodDir[i][1];
+        if (isValid(nr, nc, er, ec, vis))
+        {
+            count += floodFillMul(nr, nc, er, ec, vis, ans + dirName[i]);
+        }
         // }
     }
     vis[sr][sc] = false;
+    return count;
+}
+
+bool isValidIsl(int sr, int sc, int er, int ec, vector<vector<char>> &grid)
+{
+    if (sr < 0 || sr > er || sc < 0 || sc > ec || grid[sr][sc] == '2' || grid[sr][sc] == '0')
+    {
+        return false;
+    }
+    return true;
+}
+
+void dfs(int sr,int sc,int er,int ec,vector<vector<char>> &grid){
+    if (sr == er && sc == ec)
+    {
+        return;
+    }
+
+    grid[sr][sc] = '2';
+    int count = 0;
+    for (int i = 0; i < floodDir.size(); i++)
+    {
+        // for(int jump = 1;jump<=3;jump++){
+        int nr = sr + floodDir[i][0];
+        int nc = sc + floodDir[i][1];
+        if (isValidIsl(nr, nc, er, ec, grid))
+        {
+            dfs(nr, nc, er, ec, grid);
+        }
+        // }
+    }
+}
+
+//LEETCODE 200
+int numIslands(vector<vector<char>> &grid)
+{
+    int count = 0;
+    for(int i = 0;i<grid.size();i++){
+        for(int j = 0;j<grid[0].size();j++){
+            if(grid[i][j] == '1'){
+                count++;
+                dfs(i,j,grid.size()-1,grid[0].size()-1,grid);
+            }
+        }
+    }
     return count;
 }
 
@@ -311,8 +363,8 @@ void solve()
     //     cout << v[i] << " ";
     // }
 
-    vector<vector<bool>> vis (3,vector<bool>(3,false));
-    cout<<"\n"<<floodFillMul(0,0,2,2,vis,"");
+    vector<vector<bool>> vis(3, vector<bool>(3, false));
+    cout << "\n" << floodFillMul(0, 0, 2, 2, vis, "");
 }
 
 int main()

@@ -86,8 +86,7 @@ public class l002{
         // pair myPair = new pair((int)1e7,"");
         pair myPair = new pair(Integer.MAX_VALUE,"");
         board[sr][sc] = 1;
-
-        for(int i = 0;i<floodDir.length;i++){
+      for(int i = 0;i<floodDir.length;i++){
             int nr = sr + floodDir[i][0];
             int nc = sc + floodDir[i][1];
 
@@ -181,13 +180,47 @@ public class l002{
         return count;
     }
 
+    public static int coinChangeCombSubsequenceMethod(int[] ar,int tar,String ans,int idx){
+        if(tar == 0 || idx == ar.length){
+            if(tar == 0){
+                System.out.println(ans);
+                return 1;
+            }
+            return 0;
+        }
+
+        int count = 0;
+        if(tar - ar[idx] >= 0)
+        count+=coinChangeCombSubsequenceMethod(ar,tar-ar[idx],ans+ar[idx],idx+1);
+        count+=coinChangeCombSubsequenceMethod(ar,tar,ans,idx+1);
+        return count;
+    }
+
+    public static int coinChangeCombInfSubsequenceMethod(int[] ar,int tar,String ans,int idx){
+        if(tar == 0 || idx == ar.length){
+            if(tar == 0){
+                System.out.println(ans);
+                return 1;
+            }
+            return 0;
+        }
+
+        int count = 0;
+        if(tar - ar[idx] >= 0)
+        count+=coinChangeCombInfSubsequenceMethod(ar,tar-ar[idx],ans+ar[idx],idx);
+        count+=coinChangeCombInfSubsequenceMethod(ar,tar,ans,idx+1);
+        return count;
+    }
+
     public static void coinChangeVariations(){
         int[] ar = {2,3,5,7};
         int tar = 10;
         // System.out.println("\n" + coinChangePermInf(ar,tar,""));
         // System.out.println("\n" + coinChangeCombInf(ar,tar,"",0));
         // System.out.println("\n" + coinChangeComb(ar,tar,"",0));
-        System.out.println("\n" + coinChangePerm(ar,tar,"",new boolean[ar.length]));
+        // System.out.println("\n" + coinChangePerm(ar,tar,"",new boolean[ar.length]));
+        // System.out.println("\n" + coinChangeCombSubsequenceMethod(ar,tar,"",0)); 
+        System.out.println("\n" + coinChangeCombInfSubsequenceMethod(ar,tar,"",0)); 
     }
 
     public static void solve(){

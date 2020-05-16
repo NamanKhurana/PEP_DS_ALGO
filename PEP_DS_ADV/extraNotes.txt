@@ -36,3 +36,6 @@ javac l001.java && java l001 < input.txt > output.txt
 ==>CROSSWORD
 ==>CRYPTO
 ==>WORD_BREAK
+
+/**IMPORTANT**/
+==> Use of boolean array in PERMUTATIONS_WITHOUT_DUPLICATES vs COIN_CHANGE_PERMUTATIONS (Single coin allowed)

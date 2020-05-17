@@ -39,3 +39,10 @@ javac l001.java && java l001 < input.txt > output.txt
 
 /**IMPORTANT**/
 ==> Use of boolean array in PERMUTATIONS_WITHOUT_DUPLICATES vs COIN_CHANGE_PERMUTATIONS (Single coin allowed)
+
+**In Coinchange problem,:
+=> combination method : Coins have the control
+=> subsequence method : Target has the control
+
+=> Remember 8 trees of coinChange (combination + permutation && subsequence method)
+=> (x+1)^n = 2^n (if x == 1)

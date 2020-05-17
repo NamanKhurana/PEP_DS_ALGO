@@ -212,6 +212,45 @@ public class l002{
         return count;
     }
 
+    public static int coinChangePermInfSubsequenceMethod(int[] arr,int tar,String ans,int idx) {
+		if (idx == arr.length || tar == 0) {
+			if (tar == 0) {
+				System.out.println(ans);
+				return 1;
+			}
+
+			return 0;
+		}
+
+		int count = 0;
+		if (tar - arr[idx] >= 0) count += coinChangePermInfSubsequenceMethod(arr,tar - arr[idx], ans + arr[idx] + " ",0);
+		count += coinChangePermInfSubsequenceMethod(arr,tar, ans,idx+1);
+
+		return count;
+	}
+
+	public static int coinChangePermSubsequenceMethod(int[] arr, boolean[] vis, int idx, int tar, String ans) {
+		if (idx == arr.length || tar == 0) {
+			if (tar == 0) {
+				System.out.println(ans);
+				return 1;
+			}
+
+			return 0;
+		}
+
+		int count = 0;
+		if (tar - arr[idx] >= 0 && !vis[idx]) {
+			vis[idx] = true;
+			count += coinChangePermSubsequenceMethod(arr, vis, 0, tar - arr[idx], ans + arr[idx] + " ");
+			vis[idx] = false;
+		}
+
+		count += coinChangePermSubsequenceMethod(arr, vis, idx + 1, tar, ans);
+
+		return count;
+	}
+
     public static void coinChangeVariations(){
         int[] ar = {2,3,5,7};
         int tar = 10;
@@ -220,7 +259,10 @@ public class l002{
         // System.out.println("\n" + coinChangeComb(ar,tar,"",0));
         // System.out.println("\n" + coinChangePerm(ar,tar,"",new boolean[ar.length]));
         // System.out.println("\n" + coinChangeCombSubsequenceMethod(ar,tar,"",0)); 
-        System.out.println("\n" + coinChangeCombInfSubsequenceMethod(ar,tar,"",0)); 
+        // System.out.println("\n" + coinChangeCombInfSubsequenceMethod(ar,tar,"",0));
+        // System.out.println("\n" + coinChangePermInfSubsequenceMethod(ar,tar,"",0));
+        System.out.println("\n" + coinChangePermSubsequenceMethod(ar,new boolean[ar.length],0,tar,""));
+         
     }
 
     public static void solve(){

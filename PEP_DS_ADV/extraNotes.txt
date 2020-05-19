@@ -9,8 +9,7 @@
 g++ l001.cpp -o out && ./out  < input.txt > output.txt
 
 
-
-
+!--------------------------------------------------------------------------------------------------------!
 
 =>To run java file
 => javac <fileName> : Compile java file (converts .java file to .class file)
@@ -21,6 +20,7 @@ g++ l001.cpp -o out && ./out  < input.txt > output.txt
 /******JAVA COMMAND*********/
 javac l001.java && java l001 < input.txt > output.txt
 
+!--------------------------------------------------------------------------------------------------------!
 
 /*******Recursion**********/
 =>All about Permutations and Combinations 
@@ -46,3 +46,16 @@ javac l001.java && java l001 < input.txt > output.txt
 
 => Remember 8 trees of coinChange (combination + permutation && subsequence method)
 => (x+1)^n = 2^n (if x == 1)
+
+!--------------------------------------------------------------------------------------------------------!
+
+/*********Bits*************/
+
+OPERATOR PRECEDENCE (! > & > |)
+
+-> & -> AND
+-> | -> OR
+-> ^ -> XOR
+-> ~ -> 1's complement
+-> - -> 2's complement
+-> ! -> NOT

@@ -59,3 +59,6 @@ OPERATOR PRECEDENCE (! > & > |)
 -> ~ -> 1's complement
 -> - -> 2's complement
 -> ! -> NOT
+-> << -> Left shift (C++ & JAVA) (x << k == x*2^k)
+-> >> -> Right shift (C++ & JAVA) (x >> k == x/2^k) /**only when MSB is 0**/
+-> >>> -> Triple Right shift (JAVA) (Ensures that always 0 is appended in beginning)

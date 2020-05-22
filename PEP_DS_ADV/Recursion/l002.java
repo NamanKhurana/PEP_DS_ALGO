@@ -265,9 +265,250 @@ public class l002{
          
     }
 
+/***************************************************************************************/
+    
+    public static boolean isSafeToPlaceNumber(int[][] board,int r,int c,int num){
+        
+        for(int i = 0;i<board.length;i++){
+            if(board[r][i] == num || board[i][c] == num){
+                return false;
+            }
+        }
+
+        //(i/Math.sqrt(board[0].length)*Math.sqrt(board[0].length
+        int x = (r/3)*3;
+        int y = (c/3)*3;
+
+        for(int i = x ;i<x+3;i++){
+            for(int j = y;j<y+3;j++){
+                if(board[i][j] == num){
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    public static int sudoku_01_sub(int[][] board,int idx){
+        if(idx == 81)
+        {
+            for(int i = 0;i<board.length;i++){
+                for(int j = 0;j<board[0].length;j++){
+                    System.out.print(board[i][j] + " ");
+                }
+                System.out.println();
+            }  
+
+            System.out.println(); 
+
+        // for(int[] ar: arr){
+        //     for(int ele: ar){
+        //         System.out.print(ele + " ");
+        //     }
+        //     System.out.println();
+        // }
+            return 1;
+        } 
+
+        int x = idx/board[0].length;
+        int y = idx%board[0].length;
+
+        int count = 0;
+
+        if(board[x][y] == 0){
+            for(int i = 1;i<=9;i++){
+                if(isSafeToPlaceNumber(board,x,y,i)){
+                    board[x][y] = i;
+                    count+=sudoku_01_sub(board,idx+1);
+                    board[x][y] = 0;
+                }
+            }
+        }else{
+            count+=sudoku_01_sub(board,idx+1);
+        }
+
+        return count;
+    }
+
+    //gives one solution
+    public static boolean sudoku_02(int[][] board, int idx) {
+		if (idx == 81) {
+            for(int i = 0;i<board.length;i++){
+                for(int j = 0;j<board[0].length;j++){
+                    System.out.print(board[i][j] + " ");
+                }
+                System.out.println();
+            }  
+			return true;
+		}
+
+		int r = idx / 9;
+		int c = idx % 9;
+        boolean res = false;
+        
+		if (board[r][c] == 0) {
+			for (int num = 1; num <= 9 ; num++) {
+				if (isSafeToPlaceNumber(board, r, c, num)) {
+
+					board[r][c] = num;
+                    //if res is true then it wont call the function again
+                    res= res || sudoku_02(board, idx + 1);
+					board[r][c] = 0;
+                }
+			}
+		} else res= res || sudoku_02(board, idx + 1);
+
+		return res;
+    }
+
+    //avoid non-zero number calls
+    public static boolean sudoku_03(int[][] board,ArrayList<Integer> calls, int idx) {
+		if (idx == calls.size()) {
+            for(int i = 0;i<board.length;i++){
+                for(int j = 0;j<board[0].length;j++){
+                    System.out.print(board[i][j] + " ");
+                }
+                System.out.println();
+            }  
+			return true;
+		}
+
+        //get 2-D board index from 1-D array index
+		int r = calls.get(idx) / 9;
+		int c = calls.get(idx) % 9;
+        boolean res = false;
+        
+		if (board[r][c] == 0) {
+			for (int num = 1; num <= 9 ; num++) {
+				if (isSafeToPlaceNumber(board, r, c, num)) {
+
+					board[r][c] = num;
+                    //if res is true then it wont call the function again
+                    res= res || sudoku_03(board,calls,idx + 1);
+					board[r][c] = 0;
+                }
+			}
+		}
+
+		return res;
+    }
+
+    static int[] row;
+    static int[] col;
+    static int[][] mat;
+
+    public static int sudoku_04_bits(int[][] board,ArrayList<Integer> calls, int idx) {
+		if (idx == calls.size()) {
+            for(int i = 0;i<board.length;i++){
+                for(int j = 0;j<board[0].length;j++){
+                    System.out.print(board[i][j] + " ");
+                }
+                System.out.println();
+            }  
+            System.out.println();
+			return 1;
+		}
+
+        //get 2-D board index from 1-D array index
+		int r = calls.get(idx) / 9;
+		int c = calls.get(idx) % 9;
+        int count = 0;
+        
+		for (int num = 1; num <= 9 ; num++) {
+            int mask=(1<<num);
+            if ((row[r]&mask)==0 && (col[c]&mask)==0 && (mat[r/3][c/3]&mask)==0) {
+
+                board[r][c] = num;
+                row[r]^=mask;
+                col[c]^=mask;
+                mat[r/3][c/3]^=mask;
+            
+                count+= sudoku_04_bits(board,calls ,idx + 1);
+            
+                board[r][c] = 0;
+                row[r]^=mask;
+                col[c]^=mask;
+                mat[r/3][c/3]^=mask;
+            
+            }
+		}
+		return count;
+    }
+
+//LEETCODE 36---------------------------------------------------------------------------------
+    static int[] row;   
+    static int[] col;
+    static int[][] mat;
+    
+    public boolean isValidSudoku(char[][] board) {
+        
+        row = new int[board.length];
+        col = new int[board[0].length];
+        mat = new int[board.length/3][board[0].length];
+        
+        for(int i = 0;i<board.length;i++){
+            for(int j = 0;j<board[0].length;j++){
+                if(board[i][j]!='.'){
+                     int mask=(1<<(board[i][j]-'0'));
+                     if ((row[i]&mask)==0 && (col[j]&mask)==0 && (mat[i/3][j/3]&mask)==0) {
+                           row[i]^=mask;
+                           col[j]^=mask;
+                           mat[i/3][j/3]^=mask;
+                     }else{
+                         return false;
+                     }
+                }
+            }
+        }
+        return true;
+    }
+//-----------------------------------------------------------------------------------------------
+
+    public static void sodukuVariations(){
+     
+    int[][] board =  {{3, 0, 0, 0, 0, 0, 0, 0, 0},  
+                      {5, 2, 0, 0, 0, 0, 0, 0, 0},  
+                      {0, 8, 7, 0, 0, 0, 0, 3, 1},  
+                      {0, 0, 3, 0, 1, 0, 0, 8, 0},  
+                      {9, 0, 0, 8, 6, 3, 0, 0, 5},  
+                      {0, 5, 0, 0, 9, 0, 6, 0, 0},  
+                      {1, 3, 0, 0, 0, 0, 2, 5, 0},  
+                      {0, 0, 0, 0, 0, 0, 0, 7, 4},  
+                      {0, 0, 5, 2, 0, 6, 3, 0, 0}};  
+
+    // System.out.println(sudoku_01_sub(board,0));
+    // System.out.println(sudoku_02(board,0));
+    
+    //*to avoid function calls from non-zero numbers in sudoku grid
+    ArrayList<Integer> calls = new ArrayList<>();
+
+    row = new int[9];
+    col = new int[9];
+    mat = new int[3][3];
+
+    //*to get 1-D index of numbers from 2-D grid
+    for(int i = 0;i<9;i++){
+        for(int j = 0;j<9;j++){
+            if(board[i][j]==0){
+                    calls.add((i*9 + j));
+                }else{
+                    int mask=(1<<board[i][j]);
+                    row[i]^=mask;
+                    col[j]^=mask;
+                    mat[i/3][j/3]^=mask; 
+                    
+                }
+        }
+    }
+    // System.out.println(sudoku_03(board,calls,0));
+    System.out.println(sudoku_04_bits(board,calls,0));
+    }
+
     public static void solve(){
         // floodFillVariations();
-        coinChangeVariations();
+        // coinChangeVariations();
+        sodukuVariations();
     }
 
     public static void main(String[] args){

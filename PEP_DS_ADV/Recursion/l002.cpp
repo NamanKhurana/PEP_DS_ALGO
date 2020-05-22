@@ -301,7 +301,7 @@ int Nqueen_03_bits_sub(int m, int n, int idx, int tnq, string ans)
         diaBit ^= (1 << (x - y + n - 1));
         antiDiaBit ^= (1 << (x + y));
 
-        count += Nqueen_03_bits(m, n, idx + 1, tnq - 1, ans + "(" + to_string(x) + "," + to_string(y) + ") ");
+        count += Nqueen_03_bits_sub(m, n, idx + 1, tnq - 1, ans + "(" + to_string(x) + "," + to_string(y) + ") ");
 
         rowBit ^= (1 << x);
         colBit ^= (1 << y);
@@ -309,7 +309,7 @@ int Nqueen_03_bits_sub(int m, int n, int idx, int tnq, string ans)
         antiDiaBit ^= (1 << (x + y));
     }
 
-    count += Nqueen_03_bits(m, n, idx + 1, tnq, ans);
+    count += Nqueen_03_bits_sub(m, n, idx + 1, tnq, ans);
 
     return count;
 }
@@ -350,7 +350,8 @@ int Nqueen_04(int n, int m, int tnq, int r, string ans) // n means houses and m 
     return count;
 }
 
-int Nqueen_04_sub(int n, int m, int tnq, int r, string ans) // n means houses and m means rooms
+//!if the board size is greater than the queens
+int Nqueen_04_generic_sub(int n, int m, int tnq, int r, string ans) // n means houses and m means rooms
 {                                                           //qpsf : queen place so far, tnq: total no of queen
     if (r == n || tnq == 0)
     {
@@ -375,7 +376,7 @@ int Nqueen_04_sub(int n, int m, int tnq, int r, string ans) // n means houses an
             diaBit ^= (1 << (x - y + m - 1));
             antiDiaBit ^= (1 << (x + y));
 
-            count += Nqueen_04_sub(n, m, tnq - 1, r + 1, ans + "(" + to_string(x) + ", " + to_string(y) + ") ");
+            count += Nqueen_04_generic_sub(n, m, tnq - 1, r + 1, ans + "(" + to_string(x) + ", " + to_string(y) + ") ");
 
             rowBit ^= (1 << x);
             colBit ^= (1 << y);
@@ -383,7 +384,7 @@ int Nqueen_04_sub(int n, int m, int tnq, int r, string ans) // n means houses an
             antiDiaBit ^= (1 << (x + y));
         }
     }
-    count += Nqueen_04_sub(n, m, tnq, r + 1, ans);
+    count += Nqueen_04_generic_sub(n, m, tnq, r + 1, ans);
     return count;
 }
 
@@ -402,7 +403,7 @@ void Nqueen()
     // cout << Nqueen_03_bits(4, 4, 0, 4, "");
     // cout << Nqueen_03_bits_sub(4, 4, 0, 4, "");
     // cout << Nqueen_04(4, 4, 4, 0, "") << endl;
-    cout << Nqueen_04_sub(4, 4, 4, 0, "") << endl;
+    cout << Nqueen_04_generic_sub(4, 4, 4, 0, "") << endl;
 }
 
 int main()

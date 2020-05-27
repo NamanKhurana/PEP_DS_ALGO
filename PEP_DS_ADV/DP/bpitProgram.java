@@ -141,6 +141,65 @@ public class bpitProgram{
 		return dp[0][0];
 	}
 
+    public static int boradPath(int si, int ei, int[] dp) {
+		if (si == ei) return dp[si] = 1;
+
+		if (dp[si] != 0) return dp[si];
+
+		int count = 0;
+		for (int dice = 1; dice <= 6; dice++) {
+			if (si + dice <= ei) {
+				count += boradPath(si + dice, ei, dp);
+			}
+		}
+
+		return dp[si] = count;
+	}
+
+	public static int boradPath_DP(int si, int ei, int[] dp) {
+
+		for (int i = ei; i >= si; i--) {
+			if (i == ei) {
+				dp[i] = 1;
+				continue;
+			}
+
+			int count = 0;
+			for (int dice = 1; dice <= 6; dice++) {
+				if (i + dice <= ei) {
+					count += dp[i + dice];
+				}
+			}
+
+			dp[i] = count;
+		}
+
+		return dp[0];
+	}
+
+	public static int boradPath_02_DP(int si, int ei, int[] steps, int[] dp) {
+
+		for (int i = ei; i >= si; i--) {
+			if (i == ei) {
+				dp[i] = 1;
+				continue;
+			}
+
+			int count = 0;
+			for (int j = 0; j < steps.length; j++) {
+				if (i + steps[j] <= ei) {
+					count += dp[i + steps[j]];
+				}
+			}
+
+			dp[i] = count;
+		}
+
+		return dp[0];
+	}
+
+    
+
     
     public static void main(String[] args){
         

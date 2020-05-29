@@ -198,8 +198,61 @@ public class bpitProgram{
 		return dp[0];
 	}
 
-    
+	public static int boradPath_opti(int si, int ei, int[] dp) {
+		LinkedList < Integer > ll = new LinkedList < >();
 
+		for (int i = ei; i >= si; i--) {
+			if (i > ei - 2) {
+				ll.addFirst(1);
+				continue;
+			}
+
+			ll.addFirst(2 * ll.getFirst());
+			if (ll.size() == 8) {
+				int lastValue = ll.removeLast();
+				ll.addFirst(ll.removeFirst() - lastValue);
+			}
+		}
+
+		return ll.getFirst();
+	}
+
+	//leetcode 70.
+	public static int climbStairs(int n) {
+		if (n <= 1) return 1;
+
+		int count = climbStairs(n - 1) + climbStairs(n - 2);
+		return count;
+	}
+
+	public static int climbStairs_DP(int n) {
+		int[] dp = new int[n + 1];
+
+		for (int i = 0; i <= n; i++) {
+			if (i <= 1) {
+				dp[i] = 1;
+				continue;
+			}
+
+			dp[i] = dp[i - 1] + dp[i - 2];
+		}
+
+		display(dp);
+		return dp[n];
+	}
+
+	public static int climbStairs_fast(int n) {
+		int a = 1;
+		int b = 1;
+		int ans = 1;
+		for (int i = 2; i <= n; i++) {
+			ans = a + b;
+			a = b;
+			b = ans;
+		}
+
+		return ans;
+	}
     
     public static void main(String[] args){
         

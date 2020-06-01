@@ -337,7 +337,108 @@ public class bpitProgram{
 		return dp[0][str.length() - 1];
 	}
 
-    
+    public static int countOfPalindromicSubstring(String str) {
+		boolean[][] dp = new boolean[str.length()][str.length()];
+		int count = 0;
+		for (int gap = 0; gap < str.length(); gap++) {
+			for (int si = 0, ei = gap; ei < str.length(); si++, ei++) {
+				if (gap == 0) dp[si][ei] = true;
+				else if (str.charAt(si) == str.charAt(ei) && gap == 1) dp[si][ei] = true;
+				else dp[si][ei] = str.charAt(si) == str.charAt(ei) && dp[si + 1][ei - 1];
+
+				count = dp[si][ei] ? count + 1 : count;
+			}
+		}
+
+		return count;
+
+	}
+
+	public static int countOfPalindromicSubsubsequence_Rec(String str, int si, int ei, int[][] dp) {
+		if (si > ei) return 0;
+		if (si == ei) return dp[si][ei] = 1;
+
+		if (dp[si][ei] != 0) return dp[si][ei];
+
+		int middleString = countOfPalindromicSubsubsequence_Rec(str, si + 1, ei - 1, dp);
+		int withoutFirstCharString = countOfPalindromicSubsubsequence_Rec(str, si + 1, ei, dp);
+		int withoutLastCharString = countOfPalindromicSubsubsequence_Rec(str, si, ei - 1, dp);
+
+		int rAns = withoutFirstCharString + withoutLastCharString;
+
+		return dp[si][ei] = (str.charAt(si) == str.charAt(ei) ? rAns + 1 : rAns - middleString);
+	}
+
+	public static int countOfPalindromicSubsubsequence_DP(String str, int si, int ei, int[][] dp) {
+
+		for (int gap = 0; gap < str.length(); gap++) {
+			for (si = 0, ei = gap; ei < str.length(); si++, ei++) {
+				if (gap == 0) dp[si][ei] = 1; //length 1
+				else if (str.charAt(si) == str.charAt(ei)) dp[si][ei] = dp[si + 1][ei] + dp[si][ei - 1] + 1;
+				else dp[si][ei] = dp[si + 1][ei] + dp[si][ei - 1] - dp[si + 1][ei - 1];
+			}
+		}
+
+		return dp[0][str.length() - 1];
+	}
+
+	public static int longestCommonSubsequnece_Rec(String str1, String str2, int i, int j, int[][] dp) {
+		if (i == str1.length() || j == str2.length()) return 0;
+
+		if (dp[i][j] != 0) return dp[i][j];
+
+		if (str1.charAt(i) == str2.charAt(j)) return dp[i][j] = longestCommonSubsequnece_Rec(str1, str2, i + 1, j + 1, dp) + 1;
+
+		int a = longestCommonSubsequnece_Rec(str1, str2, i + 1, j, dp);
+		int b = longestCommonSubsequnece_Rec(str1, str2, i, j + 1, dp);
+		return dp[i][j] = Math.max(a, b);
+	}
+
+	static int maxAnsSubstring = 0;
+	public static int longestCommonSubstring_Rec(String str1, String str2, int i, int j, int[][] dp) {
+		if (i == str1.length() || j == str2.length()) return 0;
+
+		if (dp[i][j] != -1) return dp[i][j];
+
+		int a = 0;
+		if (str1.charAt(i) == str2.charAt(j)) {
+			a = longestCommonSubsequnece_Rec(str1, str2, i + 1, j + 1, dp) + 1;
+			maxAnsSubstring = Math.max(maxAnsSubstring, a);
+		}
+		longestCommonSubsequnece_Rec(str1, str2, i + 1, j, dp);
+		longestCommonSubsequnece_Rec(str1, str2, i, j + 1, dp);
+
+		return dp[i][j] = a;
+	}
+
+	public static int longestCommonSubsequnece_DP(String str1, String str2, int i, int j, int[][] dp) {
+
+		for (i = str1.length() - 1; i >= 0; i--) {
+			for (j = str2.length() - 1; j >= 0; j--) {
+
+				if (str1.charAt(i) == str2.charAt(j)) dp[i][j] = dp[i + 1][j + 1] + 1;
+				else dp[i][j] = Math.max(dp[i + 1][j], dp[i][j + 1]);
+			}
+		}
+
+		return dp[0][0];
+	}
+
+	public static int longestCommonSubstring_DP(String str1, String str2, int i, int j, int[][] dp) {
+		int max = 0;
+		for (i = str1.length() - 1; i >= 0; i--) {
+			for (j = str2.length() - 1; j >= 0; j--) {
+
+				if (str1.charAt(i) == str2.charAt(j)) {
+					dp[i][j] = dp[i + 1][j + 1] + 1;
+					max = Math.max(dp[i][j], max);
+				}
+			}
+		}
+
+		return max;
+	}
+	
     public static void main(String[] args){
         
     }

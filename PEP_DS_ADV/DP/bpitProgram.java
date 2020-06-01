@@ -493,6 +493,35 @@ public class bpitProgram{
 		return dp[0][0];
 	}
 
+    //targetSet.===================================================================
+
+	public static int coinChangePermuatation_Rec(int[] coins, int tar) {
+		if (tar == 0) return 1;
+
+		int count = 0;
+		for (int c: coins) {
+			if (tar - c >= 0) count += coinChangePermuatation_Rec(coins, tar - c);
+		}
+
+		return count;
+	}
+
+	public static int coinChangePermuatation(int[] coins, int tar) {
+
+		int[] dp = new int[tar + 1];
+		dp[0] = 1;
+
+		for (int t = 0; t <= tar; t++) {
+			for (int c: coins) {
+				if (t - c >= 0) {
+					dp[t] += dp[t - c];
+				}
+			}
+		}
+
+		return dp[tar];
+	}
+
     public static void main(String[] args){
         
     }

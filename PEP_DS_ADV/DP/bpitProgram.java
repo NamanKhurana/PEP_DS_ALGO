@@ -522,6 +522,111 @@ public class bpitProgram{
 		return dp[tar];
 	}
 
+	public static int linearEquationOfNvariables(int[] coeff, int y) {
+		return coinChangeCombination(coeff, y);
+	}
+
+	public static int targetSum(int[] arr, int tar, int idx, int[][] dp) { // dp: arr X tar
+		if (tar == 0 || idx == arr.length) {
+			return dp[idx][tar] = tar == 0 ? 1 : 0;
+		}
+
+		if (dp[idx][tar] != 0) return dp[idx][tar];
+
+		int count = 0;
+		if (tar - arr[idx] >= 0) count += targetSum(arr, tar - arr[idx], idx + 1, dp);
+
+		count += targetSum(arr, tar, idx + 1, dp);
+
+		return dp[idx][tar] = count;
+	}
+
+	public static int targetSum_DP(int[] arr, int tar, int[][] dp) { // dp: arr X tar
+		dp[0][0] = 1;
+
+		for (int idx = 1; idx < dp.length; idx++) {
+			for (int t = 0; t <= tar; t++) {
+
+				int count = 0;
+				if (t - arr[idx - 1] >= 0) {
+					count += dp[idx - 1][t - arr[idx - 1]];
+				}
+				count += dp[idx - 1][t];
+
+				dp[idx][t] = count;
+			}
+		}
+
+		return dp[dp.length - 1][dp[0].length - 1];
+	}
+
+	int knapsack_01_rec(int[] weight, int[] value, int w, int idx, int[][] dp) { // dp: weight X W
+		if (w == 0 || idx == weight.length) {
+			return 0;
+		}
+		if (dp[idx][w] != 0) return dp[idx][w];
+
+		int pick = 0;
+		if (w - weight[idx] >= 0) {
+			pick = knapsack_01_rec(weight, value, w - weight[idx], idx + 1, dp) + value[idx];
+		}
+
+		int notPicked = knapsack_01_rec(weight, value, w, idx + 1, dp);
+
+		return dp[idx][w] = Math.max(pick, notPicked);
+	}
+
+	int knapsack_01_rec_01(int[] weight, int[] value, int w, int n, int[][] dp) { // dp: weight X W, n is size of weight
+		if (w == 0 || n == 0) {
+			return 0;
+		}
+		if (dp[n][w] != 0) return dp[n][w];
+
+		int pick = 0;
+		if (w - weight[n - 1] >= 0) {
+			pick = knapsack_01_rec(weight, value, w - weight[n - 1], n - 1, dp) + value[n - 1];
+		}
+
+		int notPicked = knapsack_01_rec(weight, value, w, n - 1, dp);
+
+		return dp[n][w] = Math.max(pick, notPicked);
+	}
+
+	int knapsack_01_rec_DP(int[] weight, int[] value, int W, int[][] dp) { // dp: weight X W, n is size of weight
+		dp[0][0] = 0;
+		for (int idx = 1; idx < dp.length; idx++) {
+			for (int w = 0; w <= W; w++) {
+
+				int pick = 0;
+				if (w - weight[idx - 1] >= 0) {
+					pick = dp[idx - 1][w - weight[idx - 1]] + value[idx - 1];
+				}
+
+				int notPicked = dp[idx - 1][w];
+
+				dp[idx][w] = Math.max(pick, notPicked);
+			}
+		}
+
+		return dp[dp.length - 1][dp[0].length - 1];
+	}
+
+	int unBoundedKnapsack(int[] weight, int[] value, int W) {
+		int[] dp = new int[W + 1];
+
+		for (int idx = 0; idx < weight.length; idx++) {
+			for (int w = 1; w <= W; w++) {
+                int picked=0;
+				if (w - weight[idx] >= 0) picked = dp[w - weight[idx]] + value[idx];
+				int unPicked = dp[w];
+
+				dp[w] = Math.max(picked, unPicked);
+			}
+		}
+
+		return dp[W];
+	}
+
     public static void main(String[] args){
         
     }

@@ -627,6 +627,56 @@ public class bpitProgram{
 		return dp[W];
 	}
 
+	
+	//leetcode: decode ways 91.======================================================
+	public static int numDecodings_Rec(String s,int idx,int[] dp) {
+		if(idx==s.length()) return dp[idx]=1;
+		
+		char ch=s.charAt(idx);
+		int count=0;
+		
+		if(dp[idx]!=0) return dp[idx];
+
+		if(ch!='0')
+		   count+=numDecodings_Rec(s,idx+1,dp);
+
+		if(idx+1<s.length()){
+			char ch2=s.charAt(idx+1);
+			int val=(ch-'0')*10 + (ch2-'0');
+			  if(val>=10 && val<=26)
+			    count+=numDecodings_Rec(s,idx+2,dp);
+		}
+
+		return dp[idx]=count;		
+	}
+	
+	public static int numDecodings_DP(String s,int[] dp) {
+		for(int idx=s.length();idx>=0;idx--){
+
+			if(idx==s.length()){
+				dp[idx]=1;
+				continue;
+			}
+
+			char ch=s.charAt(idx);
+			int count=0;
+			if(ch!='0')
+			   count+=dp[idx+1];
+	
+			if(idx+1<s.length()){
+				char ch2=s.charAt(idx+1);
+				int val=(ch-'0')*10 + (ch2-'0');
+				  if(val>=10 && val<=26)
+					count+=dp[idx+2];
+			}
+	
+		    dp[idx]=count;	
+		}
+
+		return dp[0];
+    }
+
+
     public static void main(String[] args){
         
     }

@@ -108,6 +108,53 @@ public class l001 {
         System.out.print(node.data + " ");
 
     }
+    
+    public static boolean rootToNodePath_(Node root, int data, ArrayList < Node > path) {
+        if (root == null) return false;
+        if (root.data == data) {
+            path.add(root);
+            return true;
+        }
+
+        boolean res = rootToNodePath_(root.left, data, path) || rootToNodePath_(root.right, data, path);
+        if (res) path.add(root);
+        return res;
+    }
+
+    public static ArrayList < Node > rootToNodePath_02(Node root, int data) {
+
+        if (root == null) {
+            return new ArrayList < > ();
+        }
+
+        if (root.data == data) {
+            ArrayList < Node > base = new ArrayList < > ();
+            base.add(root);
+            return base;
+        }
+
+        ArrayList < Node > left = rootToNodePath_02(root.left, data);
+        if (left.size() != 0) {
+            left.add(root);
+            return left;
+        }
+
+        ArrayList < Node > right = rootToNodePath_02(root.right, data);
+        if (right.size() != 0) {
+            right.add(root);
+            return right;
+        }
+
+        return new ArrayList < > ();
+    }
+
+    public static void rootToNodePath(Node root, int data) {
+        ArrayList < Node > path = new ArrayList < > ();
+        rootToNodePath_(root, data, path);
+        for (Node n: path) {
+            System.out.print(n.data + " -> ");
+        }
+    }
 
     public static boolean find(Node node, int data) {
         if (node == null) return false;

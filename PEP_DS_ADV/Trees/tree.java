@@ -156,6 +156,116 @@ public class l001 {
         }
     }
 
+    static Node LCANode = null;
+    public static boolean LCA(Node root,Node p,Node q){
+
+        if(root == null){
+            return false;
+        }
+
+        boolean selfNode = false;
+
+        if(p.data == root.data || q.data == root.data){
+            selfNode = true;
+        }
+
+        boolean leftNode = LCA(root.left,p,q);
+        if(LCA != null){
+            return true;
+        }
+        boolean rightNode = LCA(root.right,p,q);
+        if(LCA!=null){
+            return true;
+        }
+
+        if((selfNode && leftNode) || (selfNode && rightNode) || (leftNode && rightNode){
+            LCANode = root;
+        }
+
+        return selfNode || leftNode || rightNode ;
+    } 
+    
+    //LevelOrder_series.=========================================================
+
+    public static void levelOrder_00(Node node) {
+        LinkedList < Node > pQue = new LinkedList < > (); // addLast and removeFirst.
+        pQue.addLast(node);
+
+        while (pQue.size() != 0) {
+            Node rnode = pQue.removeFirst();
+            System.out.print(rnode.data + " ");
+            if (rnode.left != null) pQue.addLast(rnode.left);
+            if (rnode.right != null) pQue.addLast(rnode.right);
+        }
+    }
+
+    public static void levelOrder_01(Node node) {
+        LinkedList < Node > pQue = new LinkedList < > (); // addLast and removeFirst.
+        LinkedList < Node > cQue = new LinkedList < > (); // addLast and removeFirst.
+
+        pQue.addLast(node);
+        int count = 0;
+        System.out.print("Level: " + count + " -> ");
+
+        while (pQue.size() != 0) {
+            Node rnode = pQue.removeFirst();
+            System.out.print(rnode.data + " ");
+            if (rnode.left != null) cQue.addLast(rnode.left);
+            if (rnode.right != null) cQue.addLast(rnode.right);
+
+            if (pQue.size() == 0) {
+                LinkedList < Node > temp = pQue;
+                pQue = cQue;
+                cQue = temp;
+                count++;
+                System.out.print("\nLevel: " + count + " -> ");
+            }
+        }
+    }
+
+    public static void levelOrder_02(Node node) {
+        LinkedList < Node > Que = new LinkedList < > (); // addLast and removeFirst.
+
+        Que.addLast(node);
+        Que.addLast(null);
+        int count = 0;
+        System.out.print("Level: " + count + " -> ");
+
+        while (Que.size() != 1) {
+            Node rnode = Que.removeFirst();
+            System.out.print(rnode.data + " ");
+            if (rnode.left != null) Que.addLast(rnode.left);
+            if (rnode.right != null) Que.addLast(rnode.right);
+
+            if (Que.getFirst() == null) {
+                Que.removeFirst();
+                Que.addLast(null);
+                count++;
+                System.out.print("\nLevel: " + count + " -> ");
+            }
+        }
+    }
+
+    public static void levelOrder_03(Node node) {
+        LinkedList < Node > pQue = new LinkedList < > (); // addLast and removeFirst.
+        pQue.addLast(node);
+
+        int count = 0;
+        while (pQue.size() != 0) {
+            System.out.print("Level: " + count + " -> ");
+            count++;
+            int size = pQue.size();
+
+            while (size-- > 0) {
+                Node rnode = pQue.removeFirst();
+                System.out.print(rnode.data + " ");
+                if (rnode.left != null) pQue.addLast(rnode.left);
+                if (rnode.right != null) pQue.addLast(rnode.right);
+            }
+            System.out.println();
+        }
+    }
+
     public static boolean find(Node node, int data) {
         if (node == null) return false;
 

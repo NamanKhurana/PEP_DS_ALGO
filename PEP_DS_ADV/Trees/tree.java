@@ -266,6 +266,41 @@ public class l001 {
         }
     }
 
+    
+    public static void leftView(Node node) {
+        LinkedList < Node > que = new LinkedList < > (); // addLast and removeFirst.
+        que.addLast(node);
+        while (que.size() != 0) {
+            int size = que.size();
+            System.out.print(que.getFirst().data + " ");
+            while (size-- > 0) {
+                Node rnode = que.removeFirst();
+                if (rnode.left != null) que.addLast(rnode.left);
+                if (rnode.right != null) que.addLast(rnode.right);
+            }
+        }
+        System.out.println();
+    }
+
+    public static void rightView(Node node) {
+        LinkedList < Node > que = new LinkedList < > (); // addLast and removeFirst.
+        que.addLast(node);
+        while (que.size() != 0) {
+            int size = que.size();
+            Node prev = null;
+            while (size-- > 0) {
+                Node rnode = que.removeFirst();
+                if (rnode.left != null) que.addLast(rnode.left);
+                if (rnode.right != null) que.addLast(rnode.right);
+                prev = rnode;
+            }
+            System.out.print(prev.data + " ");
+        }
+        System.out.println();
+    }
+    static int leftMinValue = 0;
+    static int rightMaxValue = 0;
+
     public static boolean find(Node node, int data) {
         if (node == null) return false;
 

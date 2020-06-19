@@ -301,6 +301,8 @@ public class l001 {
     static int leftMinValue = 0;
     static int rightMaxValue = 0;
 
+    
+
     public static boolean find(Node node, int data) {
         if (node == null) return false;
 

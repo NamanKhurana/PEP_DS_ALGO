@@ -140,6 +140,55 @@ void display(vector<vector<Edge>> &gp)
     cout << endl;
 }
 
+void hamiltonianPath(int src,int osrc,vector<bool>& vis,int count,string ans){
+
+    if(count == vis.size()-1){
+        if(findEdge(src,osrc) == -1){
+            cout<<"Path "<<ans + " " + to_string(src)<<endl;
+        }else{
+            cout<<"Cycle "<<ans + " " + to_string(src)<<endl;
+        }
+        return;
+    }
+
+    vis[src] = true;
+    for(Edge e : graph[src]){
+        if(!vis[src]){
+            hamiltonianPath(e.v,osrc,vis,count+1,ans+ " " + to_string(src));
+        }
+    }
+    vis[src] = false;
+}
+
+int GCC_dfs(int src, vector<bool> &vis)
+{
+    vis[src] = true;
+    int count = 0;
+
+    for (Edge e : graph[src])
+        if (!vis[e.v])
+            count += GCC_dfs(e.v, vis);
+
+    return count + 1;
+}
+
+int GCC()
+{ //getConnectedComponents
+    vector<bool> vis(N, false);
+    int count = 0;
+    int maxSize = 0;
+    for (int i = 0; i < N; i++)
+    {
+        if (!vis[i])
+        {
+            count++;
+            maxSize = max(maxSize, GCC_dfs(i, vis));
+        }
+    }
+    cout << maxSize << endl;
+    return count;
+}
+
 void constructGraph()
 {
     // for(int i = 0;i<N;i++){
